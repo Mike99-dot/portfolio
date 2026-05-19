@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lave Kumar | Data Scientist • Agentic AI • NLP Systems</title>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ai-cyan': '#06b6d4',
+                        'ai-purple': '#8b5cf6',
+                        'ai-blue': '#3b82f6',
+                        'ai-dark': '#0a0a0f',
+                        'ai-darker': '#06060d',
+                        'ai-card': 'rgba(255,255,255,0.03)',
+                        'ai-border': 'rgba(255,255,255,0.08)',
+                        'ai-glow': 'rgba(6,182,212,0.15)',
+                    },
+                    fontFamily: {
+                        'mono': ['JetBrains Mono', 'Fira Code', 'monospace'],
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delay': 'float 6s ease-in-out 3s infinite',
+                        'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+                        'slide-up': 'slideUp 0.6s ease-out forwards',
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                        'network': 'network 20s linear infinite',
+                        'gradient-shift': 'gradientShift 8s ease infinite',
+                        'profile-float': 'profileFloat 5s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        profileFloat: {
+                            '0%, 100%': { transform: 'translateY(0px) scale(1)' },
+                            '50%': { transform: 'translateY(-8px) scale(1.02)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 20px rgba(6,182,212,0.2)' },
+                            '50%': { boxShadow: '0 0 40px rgba(6,182,212,0.5), 0 0 80px rgba(139,92,246,0.3)' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        network: {
+                            '0%': { transform: 'translateY(0) rotate(0deg)' },
+                            '100%': { transform: 'translateY(-100%) rotate(2deg)' },
+                        },
+                        gradientShift: {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                        },
+                    },
+                    backgroundSize: {
+                        '400%': '400% 400%',
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --glow-cyan: rgba(6, 182, 212, 0.4);
+            --glow-purple: rgba(139, 92, 246, 0.4);
+        }
+        * {
+            scroll-behavior: smooth;
+        }
+        body {
+            background: #06060d;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism base */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(6, 182, 212, 0.08);
+        }
+
+        /* Glow border animation */
+        .glow-border {
+            position: relative;
+        }
+        .glow-border::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 22px;
+            padding: 2px;
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6, #3b82f6, #06b6d4);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        .glow-border:hover::after {
+            opacity: 1;
+        }
+
+        /* Reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #particleCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+            color: #06b6d4;
+            font-weight: 300;
+        }
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(6, 182, 212, 0.4);
+        }
+
+        .arch-node {
+            fill: rgba(255, 255, 255, 0.04);
+            stroke: rgba(255, 255, 255, 0.2);
+            stroke-width: 1.5;
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+        .arch-node:hover {
+            fill: rgba(6, 182, 212, 0.1);
+            stroke: #06b6d4;
+            stroke-width: 2;
+            filter: drop-shadow(0 0 12px rgba(6, 182, 212, 0.4));
+        }
+        .arch-arrow {
+            stroke: rgba(255, 255, 255, 0.25);
+            stroke-width: 1.5;
+            fill: none;
+            marker-end: url(#arrowhead);
+        }
+        .arch-label {
+            fill: rgba(255, 255, 255, 0.7);
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .hex-bg {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='52' viewBox='0 0 60 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 15v22L30 52 0 37V15z' fill='none' stroke='rgba(255,255,255,0.03)' stroke-width='1'/%3E%3C/svg%3E");
+            background-size: 60px 52px;
+            opacity: 0.5;
+        }
+
+        .pulse-ring {
+            animation: pulseRing 2.5s ease-out infinite;
+        }
+        @keyframes pulseRing {
+            0% {
+                box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.5);
+            }
+            70% {
+                box-shadow: 0 0 0 20px rgba(6, 182, 212, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(6, 182, 212, 0);
+            }
+        }
+
+        .profile-ring {
+            animation: profileRingPulse 3s ease-in-out infinite;
+        }
+        @keyframes profileRingPulse {
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(6, 182, 212, 0.3), 0 0 40px rgba(139, 92, 246, 0.15);
+            }
+            50% {
+                box-shadow: 0 0 35px rgba(6, 182, 212, 0.6), 0 0 70px rgba(139, 92, 246, 0.35), 0 0 100px rgba(6, 182, 212, 0.2);
+            }
+        }
+
+        .skill-tag {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #d1d5db;
+            transition: all 0.3s;
+            cursor: default;
+        }
+        .skill-tag:hover {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: rgba(6, 182, 212, 0.4);
+            color: #06b6d4;
+            box-shadow: 0 0 16px rgba(6, 182, 212, 0.15);
+        }
+        .tech-tag {
+            display: inline-block;
+            padding: 5px 12px;
+            background: rgba(6, 182, 212, 0.08);
+            border: 1px solid rgba(6, 182, 212, 0.25);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #06b6d4;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.3s;
+        }
+        .tech-tag:hover {
+            background: rgba(6, 182, 212, 0.18);
+            box-shadow: 0 0 12px rgba(6, 182, 212, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .glass-card {
+                border-radius: 14px;
+            }
+            .arch-node {
+                font-size: 8px;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans text-white antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-card !rounded-none !border-t-0 !border-x-0 !bg-opacity-80 !backdrop-blur-xl" style="background:rgba(6,6,13,0.85);">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-ai-cyan to-ai-purple flex items-center justify-center font-bold text-lg shadow-lg shadow-ai-cyan/20">
+                    LK
+                </div>
+                <span class="font-semibold text-lg tracking-tight">Lave<span class="text-ai-cyan">Kumar</span></span>
+            </div>
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
+                <a href="#about" class="hover:text-ai-cyan transition-colors duration-300">About</a>
+                <a href="#skills" class="hover:text-ai-cyan transition-colors duration-300">Skills</a>
+                <a href="#experience" class="hover:text-ai-cyan transition-colors duration-300">Experience</a>
+                <a href="#projects" class="hover:text-ai-cyan transition-colors duration-300">Projects</a>
+                <a href="#architecture" class="hover:text-ai-cyan transition-colors duration-300">Architecture</a>
+                <a href="#achievements" class="hover:text-ai-cyan transition-colors duration-300">Achievements</a>
+                <a href="#contact" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-ai-cyan to-ai-blue text-white font-semibold hover:shadow-lg hover:shadow-ai-cyan/30 transition-all duration-300 text-sm">
+                    Contact
+                </a>
+            </div>
+            <button class="md:hidden text-white p-2" onclick="document.getElementById('mobileMenu').classList.toggle('hidden')">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="16" y2="16"/></svg>
+            </button>
+        </div>
+        <div id="mobileMenu" class="hidden md:hidden px-6 pb-4 space-y-3 text-sm font-medium text-gray-300">
+            <a href="#about" class="block py-2 hover:text-ai-cyan">About</a>
+            <a href="#skills" class="block py-2 hover:text-ai-cyan">Skills</a>
+            <a href="#experience" class="block py-2 hover:text-ai-cyan">Experience</a>
+            <a href="#projects" class="block py-2 hover:text-ai-cyan">Projects</a>
+            <a href="#architecture" class="block py-2 hover:text-ai-cyan">Architecture</a>
+            <a href="#achievements" class="block py-2 hover:text-ai-cyan">Achievements</a>
+            <a href="#contact" class="block py-2 text-ai-cyan font-semibold">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <canvas id="particleCanvas"></canvas>
+        <div class="absolute inset-0 hex-bg pointer-events-none"></div>
+        <div class="absolute top-1/4 left-10 w-72 h-72 bg-ai-purple/10 rounded-full blur-3xl animate-float pointer-events-none"></div>
+        <div class="absolute bottom-1/4 right-10 w-96 h-96 bg-ai-cyan/8 rounded-full blur-3xl animate-float-delay pointer-events-none"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-ai-blue/5 via-ai-purple/5 to-ai-cyan/5 rounded-full blur-4xl pointer-events-none"></div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
+            <div class="mb-8 flex justify-center">
+                <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full profile-ring animate-profile-float">
+                    <div class="absolute inset-1 rounded-full bg-gradient-to-br from-ai-cyan via-ai-purple to-ai-blue p-[3px]">
+                        <div class="w-full h-full rounded-full bg-ai-dark flex items-center justify-center overflow-hidden">
+                            <img src="https://drive.google.com/uc?export=view&id=1iQK-pk5AxQXKrHN1nq4_rFeJnIOs6FpK" alt="Lave Kumar" class="w-full h-full object-cover rounded-full" onerror="this.parentElement.innerHTML='<span class=\'text-3xl font-bold bg-gradient-to-r from-ai-cyan to-ai-purple bg-clip-text text-transparent\'>LK</span>'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card !rounded-full mb-8 text-sm text-gray-300 pulse-ring">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                Currently working as Data Scientist with 2.5+ years of experience
+            </div>
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight mb-6 tracking-tight">
+                <span class="bg-gradient-to-r from-white via-white to-gray-300 bg-clip-text text-transparent">Building Intelligent</span><br>
+                <span class="bg-gradient-to-r from-ai-cyan via-ai-blue to-ai-purple bg-clip-text text-transparent bg-400% animate-gradient-shift">
+                    Agentic Systems
+                </span><br>
+                <span class="text-2xl md:text-3xl lg:text-4xl font-medium text-gray-400 mt-4 block">for Enterprise AI Automation</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-10 leading-relaxed">
+                Designing multi-agent AI platforms, retrieval systems, and production-grade LLM architectures
+                that optimize <span class="text-ai-cyan font-semibold">intelligence</span>,
+                <span class="text-ai-purple font-semibold">cost</span>, and
+                <span class="text-ai-blue font-semibold">scale</span>.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#projects" class="px-8 py-4 rounded-full bg-gradient-to-r from-ai-cyan to-ai-blue text-white font-semibold text-lg hover:shadow-xl hover:shadow-ai-cyan/40 transition-all duration-300 hover:-translate-y-1">
+                    View Projects
+                </a>
+                <a href="https://drive.google.com/file/d/1d_L5BxrZC1DdzlMhrLMiii6dOMOhTc5d/view" target="_blank" rel="noopener" class="px-8 py-4 rounded-full glass-card !rounded-full font-semibold text-lg hover:border-ai-cyan/40 transition-all duration-300 hover:-translate-y-1 flex items-center gap-2">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Download Resume
+                </a>
+                <a href="#contact" class="px-8 py-4 rounded-full glass-card !rounded-full font-semibold text-lg hover:border-ai-purple/40 transition-all duration-300 hover:-translate-y-1">
+                    Contact Me
+                </a>
+            </div>
+            <div class="flex flex-wrap justify-center gap-6 mt-8">
+                <a href="https://www.linkedin.com/in/lave-kumar/" target="_blank" rel="noopener" class="flex items-center gap-2 text-sm text-gray-400 hover:text-ai-cyan transition-colors duration-300">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    LinkedIn
+                </a>
+                <a href="https://github.com/LaveKumar" target="_blank" rel="noopener" class="flex items-center gap-2 text-sm text-gray-400 hover:text-ai-purple transition-colors duration-300">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+                    GitHub
+                </a>
+            </div>
+            <div class="flex flex-wrap justify-center gap-8 mt-12 text-sm text-gray-500">
+                <div class="flex items-center gap-2"><span class="text-ai-cyan font-mono font-bold text-xl">2K+</span> Daily Queries</div>
+                <div class="flex items-center gap-2"><span class="text-ai-purple font-mono font-bold text-xl">92%</span> Accuracy</div>
+                <div class="flex items-center gap-2"><span class="text-green-400 font-mono font-bold text-xl">$8K</span>/mo Saved</div>
+                <div class="flex items-center gap-2"><span class="text-ai-blue font-mono font-bold text-xl">5,000+</span> Users</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="relative py-24 px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="reveal text-center mb-16">
+                <span class="text-ai-cyan font-mono text-sm tracking-widest uppercase">About Me</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-6">Data Scientist & Agentic AI Specialist</h2>
+                <p class="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed">Gurgaon, Haryana, India</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="reveal glass-card p-8">
+                    <p class="text-gray-300 leading-relaxed text-lg">
+                        Data Scientist with <strong class="text-ai-cyan">2.5+ years of experience</strong> specializing in Enterprise AI systems and agentic workflows. Core contributor to <strong class="text-white">ORBIT HRMS</strong>—a platform with <span class="text-ai-cyan font-mono">180+ RESTful APIs</span> serving <span class="text-ai-purple font-mono">5,000+ employees</span>.
+                    </p>
+                    <p class="text-gray-400 leading-relaxed mt-4">
+                        Expert in building scalable microservices, AI Agentic workflows, and high-performance systems using <span class="text-ai-cyan">FastAPI, PostgreSQL, Redis, and Docker</span>. I implement LLM-powered agents that automate complex HRMS processes with secure read/write capabilities.
+                    </p>
+                </div>
+                <div class="reveal glass-card p-8 flex flex-col justify-center">
+                    <p class="text-gray-300 leading-relaxed text-lg">
+                        I combine <span class="text-ai-purple font-semibold">LLM orchestration</span>,
+                        <span class="text-ai-cyan font-semibold">vector search</span>, and <span class="text-ai-blue font-semibold">cloud-native engineering</span> to deliver production-grade AI solutions that balance cost, performance, and security.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-6">
+                        <span class="px-3 py-1.5 rounded-full glass-card !rounded-full text-xs font-mono text-ai-cyan">Data Science</span>
+                        <span class="px-3 py-1.5 rounded-full glass-card !rounded-full text-xs font-mono text-ai-purple">Agentic AI</span>
+                        <span class="px-3 py-1.5 rounded-full glass-card !rounded-full text-xs font-mono text-ai-blue">LLM Engineering</span>
+                        <span class="px-3 py-1.5 rounded-full glass-card !rounded-full text-xs font-mono text-green-400">RAG Pipelines</span>
+                        <span class="px-3 py-1.5 rounded-full glass-card !rounded-full text-xs font-mono text-yellow-400">Cloud (AWS)</span>
+                        <span class="px-3 py-1.5 rounded-full glass-card !rounded-full text-xs font-mono text-pink-400">NLP Systems</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="relative py-24 px-6 bg-ai-darker/50">
+        <div class="max-w-6xl mx-auto">
+            <div class="reveal text-center mb-16">
+                <span class="text-ai-cyan font-mono text-sm tracking-widest uppercase">Technical Arsenal</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-3">Skills & Expertise</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Programming & Libraries -->
+                <div class="reveal glass-card p-7 glow-border">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-ai-cyan/20 to-ai-blue/20 flex items-center justify-center mb-4">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Programming & Libraries</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag">Python (NumPy, Pandas)</span><span class="skill-tag">Matplotlib</span><span class="skill-tag">Seaborn</span>
+                        <span class="skill-tag">LangChain</span><span class="skill-tag">LangGraph</span><span class="skill-tag">RAG</span>
+                        <span class="skill-tag">Vertex AI</span><span class="skill-tag">OpenAI</span><span class="skill-tag">Scikit-learn</span>
+                        <span class="skill-tag">TensorFlow</span><span class="skill-tag">Keras</span><span class="skill-tag">Spark</span>
+                        <span class="skill-tag">SQL (MySQL)</span><span class="skill-tag">Unix</span>
+                    </div>
+                </div>
+                <!-- Machine Learning & AI -->
+                <div class="reveal glass-card p-7 glow-border">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-ai-purple/20 to-pink-400/20 flex items-center justify-center mb-4">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Machine Learning & AI</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag">Supervised Learning</span><span class="skill-tag">Regression</span><span class="skill-tag">Classification</span>
+                        <span class="skill-tag">Deep Learning</span><span class="skill-tag">NLP</span><span class="skill-tag">Sentiment Analysis</span>
+                        <span class="skill-tag">A/B Testing</span><span class="skill-tag">Time-Series Analysis</span>
+                    </div>
+                </div>
+                <!-- Cloud & Data Engineering -->
+                <div class="reveal glass-card p-7 glow-border">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-400/20 to-ai-cyan/20 flex items-center justify-center mb-4">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Cloud & Data Engineering</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag">AWS (S3, Glue, Lambda, EC2)</span><span class="skill-tag">Athena</span><span class="skill-tag">QuickSight</span>
+                        <span class="skill-tag">VPC</span><span class="skill-tag">ETL Pipelines</span>
+                    </div>
+                </div>
+                <!-- Tools & Others -->
+                <div class="reveal glass-card p-7 glow-border">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-400/20 to-orange-400/20 flex items-center justify-center mb-4">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><path d="M7 8h10"/><path d="M7 12h10"/><path d="M7 16h10"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Tools & Others</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag">Git/GitHub</span><span class="skill-tag">Power BI</span><span class="skill-tag">Excel</span>
+                        <span class="skill-tag">Linux</span><span class="skill-tag">Analytics</span><span class="skill-tag">VS Code</span>
+                        <span class="skill-tag">Jupyter Notebook</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Experience Section -->
+    <section id="experience" class="relative py-24 px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="reveal text-center mb-16">
+                <span class="text-ai-cyan font-mono text-sm tracking-widest uppercase">Career Journey</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-3">Professional Experience</h2>
+            </div>
+            <div class="space-y-8">
+                <!-- Hitachi Data Scientist -->
+                <div class="reveal glass-card p-8 relative overflow-hidden">
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-ai-cyan to-ai-purple"></div>
+                    <div class="ml-4">
+                        <div class="flex flex-wrap justify-between items-start gap-4 mb-4">
+                            <div>
+                                <h3 class="text-2xl font-bold">Data Scientist</h3>
+                                <p class="text-ai-cyan font-semibold">Hitachi Digital Services</p>
+                            </div>
+                            <span class="px-4 py-2 rounded-full glass-card !rounded-full text-sm font-mono text-gray-300">July 2024 – Present</span>
+                        </div>
+                        <p class="text-gray-400 mb-4">Gurugram, Haryana</p>
+
+                        <div class="mb-6">
+                            <h4 class="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-ai-cyan"></span> NL2SQL – AI Search MODE (Google Search)
+                            </h4>
+                            <ul class="space-y-2 text-gray-400 text-sm pl-4">
+                                <li class="flex items-start gap-2"><span class="text-ai-cyan mt-1">▸</span> Designed and implemented an NL2SQL query system that converts natural language requests into structured SQL queries for internal data retrieval.</li>
+                                <li class="flex items-start gap-2"><span class="text-ai-cyan mt-1">▸</span> Built an intelligent query-routing layer that determines whether a request can be answered using internal PostgreSQL databases before falling back to external web crawling.</li>
+                                <li class="flex items-start gap-2"><span class="text-ai-cyan mt-1">▸</span> Implemented a decision pipeline (Classify → Route → Query → Validate → Respond) to ensure accurate and controlled data access.</li>
+                                <li class="flex items-start gap-2"><span class="text-ai-cyan mt-1">▸</span> Added query result caching to reuse previously computed answers, reducing database load and improving response latency.</li>
+                                <li class="flex items-start gap-2"><span class="text-ai-cyan mt-1">▸</span> Enabled contextual retrieval using PostgreSQL + pgvector for semantic matching of user intent with existing structured data.</li>
+                                <li class="flex items-start gap-2"><span class="text-ai-cyan mt-1">▸</span> Conducted performance tuning and benchmarking to balance accuracy, latency, and cost across SQL retrieval vs. fallback crawling paths.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-ai-purple"></span> ORBIT – Human Resource Management System
+                            </h4>
+                            <p class="text-sm text-ai-purple font-semibold mb-2">Backend Engineering:</p>
+                            <ul class="space-y-2 text-gray-400 text-sm pl-4 mb-4">
+                                <li class="flex items-start gap-2"><span class="text-ai-purple mt-1">▸</span> Engineered and maintained 180+ production-grade REST APIs using FastAPI, achieving 99.95% uptime for 5,000+ internal users handling 300+ RPS.</li>
+                                <li class="flex items-start gap-2"><span class="text-ai-purple mt-1">▸</span> Designed JWT, OAuth 2.0, and fine-grained RBAC authentication with dual-session strategy (15-minute JWT / 15-day Google OAuth).</li>
+                                <li class="flex items-start gap-2"><span class="text-ai-purple mt-1">▸</span> Optimized PostgreSQL schemas with indexing and execution plan tuning, reducing API latency by 60%.</li>
+                                <li class="flex items-start gap-2"><span class="text-ai-purple mt-1">▸</span> Implemented Redis-based caching for read-heavy endpoints and Celery + Redis for background tasks including automated attendance notifications.</li>
+                                <li class="flex items-start gap-2"><span class="text-ai-purple mt-1">▸</span> Implemented CI/CD pipelines using GitHub Actions with 70% unit test coverage using Pytest.</li>
+                            </ul>
+                            <p class="text-sm text-ai-cyan font-semibold mb-2">ORBIT AI Chat Assistant:</p>
+                            <ul class="space-y-2 text-gray-400 text-sm pl-4">
+                                <li class="flex items-start gap-2"><span class="text-ai-cyan mt-1">▸</span> Developed an AI Agent handling 2,000+ daily queries with 92% accuracy using LangChain, LangGraph and RAG.</li>
+                                <li class="flex items-start gap-2"><span class="text-ai-cyan mt-1">▸</span> Architected a Model Control Plane (MCP) for token budget management, saving $8,000/month in API costs.</li>
+                                <li class="flex items-start gap-2"><span class="text-ai-cyan mt-1">▸</span> Added human-in-the-loop approval for LLM-generated write actions, reducing query resolution time from 10 min to 2 min.</li>
+                                <li class="flex items-start gap-2"><span class="text-ai-cyan mt-1">▸</span> Built auto-generated API registry scanning 180+ Pydantic schemas for LLM documentation.</li>
+                                <li class="flex items-start gap-2"><span class="text-ai-cyan mt-1">▸</span> Built conversation memory system using PostgreSQL with pgvector for contextual retrieval and long-term memory.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Avertech Cloud Engineer -->
+                <div class="reveal glass-card p-8 relative overflow-hidden">
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-ai-blue to-ai-cyan"></div>
+                    <div class="ml-4">
+                        <div class="flex flex-wrap justify-between items-start gap-4 mb-4">
+                            <div>
+                                <h3 class="text-2xl font-bold">Cloud Engineer</h3>
+                                <p class="text-ai-blue font-semibold">Avertech Pvt. Ltd.</p>
+                            </div>
+                            <span class="px-4 py-2 rounded-full glass-card !rounded-full text-sm font-mono text-gray-300">March 2023 – July 2024</span>
+                        </div>
+                        <p class="text-gray-400 mb-4">Noida, Uttar Pradesh</p>
+                        <ul class="space-y-2 text-gray-400 text-sm pl-4">
+                            <li class="flex items-start gap-2"><span class="text-ai-blue mt-1">▸</span> Designed and managed scalable AWS infrastructure using EC2, VPC, and S3, ensuring secure networking and high availability.</li>
+                            <li class="flex items-start gap-2"><span class="text-ai-blue mt-1">▸</span> Built event-driven and serverless solutions with AWS Lambda (Python) to automate workflows and power API backends.</li>
+                            <li class="flex items-start gap-2"><span class="text-ai-blue mt-1">▸</span> Implemented IAM roles and security groups to enforce the principle of least privilege, significantly enhancing the cloud security posture.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Projects Section -->
+    <section id="projects" class="relative py-24 px-6 bg-ai-darker/50">
+        <div class="max-w-6xl mx-auto">
+            <div class="reveal text-center mb-16">
+                <span class="text-ai-cyan font-mono text-sm tracking-widest uppercase">Featured Work</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-3">Projects</h2>
+            </div>
+
+            <div class="reveal glass-card p-8 mb-10 glow-border">
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-ai-cyan to-ai-purple flex items-center justify-center text-sm font-bold">AI</div>
+                            <h3 class="text-2xl font-bold">ORBIT AI Chat Assistant</h3>
+                        </div>
+                        <p class="text-gray-300 leading-relaxed mb-6">Enterprise multi-agent platform handling <strong class="text-ai-cyan">2,000+ daily queries</strong> with <strong class="text-green-400">92% accuracy</strong> using LangChain, LangGraph, RAG, and PostgreSQL vector memory.</p>
+                        <div class="grid sm:grid-cols-2 gap-3 mb-6">
+                            <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> Plan-Decide-Act orchestration</div>
+                            <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> MCP for token budget</div>
+                            <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> $8K/month saved</div>
+                            <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> Human-in-the-loop</div>
+                            <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> RBAC & security</div>
+                            <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> 180+ Pydantic schemas</div>
+                            <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> pgvector memory</div>
+                            <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> A/B testing</div>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="tech-tag">LangChain</span><span class="tech-tag">LangGraph</span><span class="tech-tag">PostgreSQL</span>
+                            <span class="tech-tag">pgvector</span><span class="tech-tag">OpenAI</span><span class="tech-tag">Gemini</span>
+                            <span class="tech-tag">DeepSeek</span><span class="tech-tag">FastAPI</span>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-1 flex items-center justify-center">
+                        <svg viewBox="0 0 200 280" class="w-full max-w-[200px]" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                                    <polygon points="0 0, 8 3, 0 6" fill="rgba(255,255,255,0.5)"/>
+                                </marker>
+                            </defs>
+                            <rect x="65" y="8" width="70" height="28" rx="14" class="arch-node" fill="rgba(6,182,212,0.08)" stroke="#06b6d4"/>
+                            <text x="100" y="26" text-anchor="middle" class="arch-label" fill="#06b6d4" font-size="10">User Query</text>
+                            <line x1="100" y1="36" x2="100" y2="55" class="arch-arrow" stroke="#06b6d4"/>
+                            <rect x="50" y="55" width="100" height="32" rx="8" class="arch-node" fill="rgba(139,92,246,0.08)" stroke="#8b5cf6"/>
+                            <text x="100" y="74" text-anchor="middle" class="arch-label" fill="#8b5cf6" font-size="10">Orchestrator</text>
+                            <line x1="70" y1="87" x2="45" y2="105" class="arch-arrow"/>
+                            <rect x="10" y="105" width="70" height="26" rx="6" class="arch-node"/>
+                            <text x="45" y="121" text-anchor="middle" class="arch-label" font-size="9">Plan</text>
+                            <line x1="100" y1="87" x2="100" y2="105" class="arch-arrow"/>
+                            <rect x="65" y="105" width="70" height="26" rx="6" class="arch-node"/>
+                            <text x="100" y="121" text-anchor="middle" class="arch-label" font-size="9">Decide</text>
+                            <line x1="130" y1="87" x2="155" y2="105" class="arch-arrow"/>
+                            <rect x="120" y="105" width="70" height="26" rx="6" class="arch-node"/>
+                            <text x="155" y="121" text-anchor="middle" class="arch-label" font-size="9">Act</text>
+                            <line x1="100" y1="131" x2="100" y2="150" class="arch-arrow"/>
+                            <rect x="30" y="150" width="140" height="30" rx="8" class="arch-node" fill="rgba(6,182,212,0.06)" stroke="#06b6d4"/>
+                            <text x="100" y="168" text-anchor="middle" class="arch-label" fill="#06b6d4" font-size="10">Tools & APIs (180+)</text>
+                            <line x1="100" y1="180" x2="100" y2="200" class="arch-arrow"/>
+                            <rect x="40" y="200" width="120" height="30" rx="8" class="arch-node" fill="rgba(34,197,94,0.06)" stroke="#22c55e"/>
+                            <text x="100" y="218" text-anchor="middle" class="arch-label" fill="#22c55e" font-size="10">pgvector Memory</text>
+                            <line x1="100" y1="230" x2="100" y2="252" class="arch-arrow" stroke="#f59e0b"/>
+                            <rect x="55" y="252" width="90" height="24" rx="12" class="arch-node" fill="rgba(245,158,11,0.08)" stroke="#f59e0b"/>
+                            <text x="100" y="268" text-anchor="middle" class="arch-label" fill="#f59e0b" font-size="10">Response</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal glass-card p-8 mb-10 glow-border">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-ai-blue to-ai-purple flex items-center justify-center text-sm font-bold">HR</div>
+                    <h3 class="text-2xl font-bold">ORBIT HRMS Platform</h3>
+                </div>
+                <p class="text-gray-300 leading-relaxed mb-6">Enterprise HRMS with <strong class="text-ai-blue">180+ RESTful APIs</strong> serving <strong class="text-ai-cyan">5,000+ employees</strong>, built with FastAPI, PostgreSQL, and Redis.</p>
+                <div class="grid sm:grid-cols-2 gap-3 mb-6">
+                    <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> 99.95% uptime, 300+ RPS</div>
+                    <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> JWT + OAuth 2.0 RBAC</div>
+                    <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> 60% latency reduction</div>
+                    <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> Redis caching + Celery</div>
+                    <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> CI/CD with 70% coverage</div>
+                    <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> LLM-powered HR agents</div>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="tech-tag">FastAPI</span><span class="tech-tag">PostgreSQL</span><span class="tech-tag">Redis</span>
+                    <span class="tech-tag">Docker</span><span class="tech-tag">Celery</span><span class="tech-tag">JWT</span>
+                    <span class="tech-tag">OAuth2</span><span class="tech-tag">RBAC</span><span class="tech-tag">LangChain</span>
+                </div>
+            </div>
+
+            <div class="reveal glass-card p-8 mb-10 glow-border">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-400 to-pink-500 flex items-center justify-center text-sm font-bold">💳</div>
+                    <h3 class="text-2xl font-bold">Credit Card Fraud Detection</h3>
+                    <span class="px-3 py-1 rounded-full glass-card !rounded-full text-xs font-mono text-pink-400">Deep Learning • Imbalanced Data</span>
+                </div>
+                <p class="text-gray-300 leading-relaxed mb-6">End-to-end fraud detection pipeline on <strong class="text-ai-cyan">280K+ transactions</strong> with SMOTE and feature scaling.</p>
+                <div class="grid sm:grid-cols-2 gap-3 mb-6">
+                    <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> ROC-AUC: <strong>0.97</strong></div>
+                    <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> F1-score: <strong>0.91</strong></div>
+                    <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> ANN vs Logistic Regression</div>
+                    <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> Cross-validation</div>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="tech-tag">Python</span><span class="tech-tag">TensorFlow</span><span class="tech-tag">Scikit-learn</span>
+                    <span class="tech-tag">SMOTE</span><span class="tech-tag">Pandas</span>
+                </div>
+            </div>
+
+            <div class="reveal glass-card p-8 glow-border">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-400 to-ai-cyan flex items-center justify-center text-sm font-bold">🤖</div>
+                    <h3 class="text-2xl font-bold">RAG-Powered Intelligent Chatbot</h3>
+                    <span class="px-3 py-1 rounded-full glass-card !rounded-full text-xs font-mono text-green-400">LangChain • FAISS • HuggingFace</span>
+                </div>
+                <p class="text-gray-300 leading-relaxed mb-6">RAG pipeline over PDFs and hyperlinks using FAISS vector search and open-source LLMs, reducing hallucinations.</p>
+                <div class="grid sm:grid-cols-2 gap-3 mb-6">
+                    <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> FAISS semantic retrieval</div>
+                    <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> HuggingFace embeddings</div>
+                    <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> Context-grounded answers</div>
+                    <div class="flex items-start gap-2 text-sm text-gray-400"><span class="text-green-400">✓</span> Open-source LLM integration</div>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="tech-tag">Python</span><span class="tech-tag">LangChain</span><span class="tech-tag">FAISS</span>
+                    <span class="tech-tag">HuggingFace</span><span class="tech-tag">RAG</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Architecture Expertise -->
+    <section id="architecture" class="relative py-24 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="reveal text-center mb-16">
+                <span class="text-ai-cyan font-mono text-sm tracking-widest uppercase">Deep Expertise</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-3">AI Architecture Expertise</h2>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="reveal glass-card p-6 text-center group"><div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-ai-cyan/20 to-ai-blue/20 flex items-center justify-center mb-4"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#06b6d4"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><h3 class="font-bold text-lg">RAG Architecture</h3><p class="text-gray-500 text-sm">Hybrid search, reranking, context optimization</p></div>
+                <div class="reveal glass-card p-6 text-center group"><div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-ai-purple/20 to-pink-400/20 flex items-center justify-center mb-4"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/></svg></div><h3 class="font-bold text-lg">Agent Orchestration</h3><p class="text-gray-500 text-sm">Plan-Decide-Act loops, error recovery</p></div>
+                <div class="reveal glass-card p-6 text-center group"><div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-green-400/20 to-ai-cyan/20 flex items-center justify-center mb-4"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22c55e"><path d="M12 2l9 4.5v7L12 18l-9-4.5v-7z"/></svg></div><h3 class="font-bold text-lg">Model Control Plane</h3><p class="text-gray-500 text-sm">Token budget, model routing, RBAC</p></div>
+                <div class="reveal glass-card p-6 text-center group"><div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-yellow-400/20 to-orange-400/20 flex items-center justify-center mb-4"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f59e0b"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg></div><h3 class="font-bold text-lg">Vector Search</h3><p class="text-gray-500 text-sm">pgvector, embedding optimization</p></div>
+                <div class="reveal glass-card p-6 text-center group"><div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-blue-400/20 to-ai-blue/20 flex items-center justify-center mb-4"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3b82f6"><rect x="2" y="6" width="20" height="12" rx="2"/></svg></div><h3 class="font-bold text-lg">Memory Systems</h3><p class="text-gray-500 text-sm">Conversation memory, long-term state</p></div>
+                <div class="reveal glass-card p-6 text-center group"><div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-red-400/20 to-pink-400/20 flex items-center justify-center mb-4"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f472b6"><line x1="12" y1="1" x2="12" y2="23"/></svg></div><h3 class="font-bold text-lg">Token Optimization</h3><p class="text-gray-500 text-sm">Cost-aware routing, caching</p></div>
+                <div class="reveal glass-card p-6 text-center group"><div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-gray-400/20 to-white/10 flex items-center justify-center mb-4"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#d1d5db"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3 class="font-bold text-lg">Enterprise AI Security</h3><p class="text-gray-500 text-sm">RBAC, human-in-the-loop, audit</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements -->
+    <section id="achievements" class="relative py-24 px-6 bg-ai-darker/50">
+        <div class="max-w-5xl mx-auto">
+            <div class="reveal text-center mb-16">
+                <span class="text-ai-cyan font-mono text-sm tracking-widest uppercase">Impact Metrics</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-3">Achievements</h2>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
+                <div class="reveal glass-card p-6 text-center"><div class="text-4xl font-extrabold bg-gradient-to-r from-ai-cyan to-ai-blue bg-clip-text text-transparent mb-2">92%</div><p class="text-gray-400 text-sm">Enterprise AI accuracy</p></div>
+                <div class="reveal glass-card p-6 text-center"><div class="text-4xl font-extrabold bg-gradient-to-r from-green-400 to-ai-cyan bg-clip-text text-transparent mb-2">5×</div><p class="text-gray-400 text-sm">Faster resolution (10→2 min)</p></div>
+                <div class="reveal glass-card p-6 text-center"><div class="text-4xl font-extrabold bg-gradient-to-r from-ai-purple to-pink-400 bg-clip-text text-transparent mb-2">$8K</div><p class="text-gray-400 text-sm">Monthly API cost savings</p></div>
+                <div class="reveal glass-card p-6 text-center"><div class="text-4xl font-extrabold bg-gradient-to-r from-ai-blue to-ai-cyan bg-clip-text text-transparent mb-2">5K+</div><p class="text-gray-400 text-sm">HRMS platform users</p></div>
+                <div class="reveal glass-card p-6 text-center"><div class="text-4xl font-extrabold bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent mb-2">0.92</div><p class="text-gray-400 text-sm">NLP F1-score (from 0.84)</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Hire Me -->
+    <section class="relative py-24 px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="reveal text-center mb-16">
+                <span class="text-ai-cyan font-mono text-sm tracking-widest uppercase">Value Proposition</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-3">Why Hire Me</h2>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="reveal glass-card p-7 flex items-start gap-4"><div class="w-10 h-10 rounded-xl bg-ai-cyan/15 flex items-center justify-center">⚙️</div><div><h3 class="font-bold text-lg mb-2">Production AI Mindset</h3><p class="text-gray-400 text-sm">I build AI systems that work in production, not just demos. Reliability and scale come first.</p></div></div>
+                <div class="reveal glass-card p-7 flex items-start gap-4"><div class="w-10 h-10 rounded-xl bg-ai-purple/15 flex items-center justify-center">🤖</div><div><h3 class="font-bold text-lg mb-2">Multi-Agent Design</h3><p class="text-gray-400 text-sm">Hands-on experience with LangChain & LangGraph for complex agent orchestration.</p></div></div>
+                <div class="reveal glass-card p-7 flex items-start gap-4"><div class="w-10 h-10 rounded-xl bg-green-400/15 flex items-center justify-center">📊</div><div><h3 class="font-bold text-lg mb-2">Cloud & Data Engineering</h3><p class="text-gray-400 text-sm">AWS infrastructure and ETL pipelines complement my AI stack for end-to-end solutions.</p></div></div>
+                <div class="reveal glass-card p-7 flex items-start gap-4"><div class="w-10 h-10 rounded-xl bg-blue-400/15 flex items-center justify-center">🧠</div><div><h3 class="font-bold text-lg mb-2">NLP + Backend Blend</h3><p class="text-gray-400 text-sm">Rare mix of deep NLP expertise and solid backend engineering.</p></div></div>
+                <div class="reveal glass-card p-7 flex items-start gap-4"><div class="w-10 h-10 rounded-xl bg-yellow-400/15 flex items-center justify-center">⚖️</div><div><h3 class="font-bold text-lg mb-2">Cost-Performance Balance</h3><p class="text-gray-400 text-sm">Saving $8K/month while maintaining 92% accuracy proves my optimization mindset.</p></div></div>
+                <div class="reveal glass-card p-7 flex items-start gap-4"><div class="w-10 h-10 rounded-xl bg-pink-400/15 flex items-center justify-center">🔒</div><div><h3 class="font-bold text-lg mb-2">Security-First AI</h3><p class="text-gray-400 text-sm">RBAC, human-in-the-loop, audit trails – enterprise security baked in.</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="relative py-24 px-6 bg-ai-darker/50">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="reveal mb-12">
+                <span class="text-ai-cyan font-mono text-sm tracking-widest uppercase">Get In Touch</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4">Let's Build Together</h2>
+            </div>
+            <div class="reveal glass-card p-10 max-w-lg mx-auto glow-border">
+                <div class="space-y-5 text-left">
+                    <div class="flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]"><span class="text-ai-cyan">📍</span><div><p class="text-sm text-gray-500">Location</p><p class="font-semibold">Gurgaon, Haryana, India</p></div></div>
+                    <div class="flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]"><span class="text-ai-purple">📧</span><div><p class="text-sm text-gray-500">Email</p><a href="mailto:lavechauhan7856@gmail.com" class="font-semibold text-ai-cyan hover:underline">lavechauhan7856@gmail.com</a></div></div>
+                    <div class="flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]"><span class="text-green-400">📞</span><div><p class="text-sm text-gray-500">Phone</p><a href="tel:+916397454755" class="font-semibold hover:text-ai-cyan">+91 6397454755</a></div></div>
+                    <div class="flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]"><span class="text-yellow-400">🔗</span><div class="flex flex-wrap gap-4">
+                        <a href="https://www.linkedin.com/in/lave-kumar/" target="_blank" rel="noopener" class="text-sm text-gray-400 hover:text-ai-cyan flex items-center gap-1"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LinkedIn</a>
+                        <a href="https://github.com/LaveKumar" target="_blank" rel="noopener" class="text-sm text-gray-400 hover:text-ai-purple flex items-center gap-1"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg> GitHub</a>
+                    </div></div>
+                </div>
+                <div class="flex gap-3 mt-6">
+                    <a href="mailto:lavechauhan7856@gmail.com" class="flex-1 py-4 rounded-full bg-gradient-to-r from-ai-cyan to-ai-blue text-white font-bold text-lg hover:shadow-xl hover:shadow-ai-cyan/30 transition-all duration-300 text-center">Send Email</a>
+                    <a href="https://drive.google.com/file/d/demo-resume-link/view" target="_blank" rel="noopener" class="flex-1 py-4 rounded-full glass-card !rounded-full font-bold text-lg hover:border-ai-cyan/40 transition-all duration-300 text-center">Download Resume</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-8 px-6 border-t border-white/[0.05] text-center text-gray-500 text-sm">
+        <p>© 2026 Lave Kumar | <a href="mailto:lavechauhan7856@gmail.com" class="hover:text-ai-cyan">lavechauhan7856@gmail.com</a> | <a href="tel:+916397454755" class="hover:text-ai-cyan">+91 6397454755</a></p>
+    </footer>
+
+    <script>
+        (function() {
+            const canvas = document.getElementById('particleCanvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            const particleCount = 80;
+
+            function resizeCanvas() {
+                const hero = document.getElementById('hero');
+                canvas.width = hero.offsetWidth;
+                canvas.height = hero.offsetHeight;
+            }
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.vx = (Math.random() - 0.5) * 0.5;
+                    this.vy = (Math.random() - 0.5) * 0.5;
+                    this.radius = Math.random() * 1.5 + 0.5;
+                    this.opacity = Math.random() * 0.5 + 0.2;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(6,182,212,${this.opacity})`;
+                    ctx.fill();
+                }
+            }
+
+            function initParticles() {
+                particles = [];
+                for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+            }
+
+            function drawConnections() {
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 120) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = `rgba(139,92,246,${(1 - dist / 120) * 0.12})`;
+                            ctx.strokeWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => { p.update(); p.draw(); });
+                drawConnections();
+                requestAnimationFrame(animate);
+            }
+
+            resizeCanvas();
+            initParticles();
+            animate();
+            window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
+
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+            }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+            revealElements.forEach(el => observer.observe(el));
+        })();
+    </script>
+</body>
+</html>
