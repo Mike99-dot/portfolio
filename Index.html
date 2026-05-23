@@ -137,6 +137,8 @@
             mask-composite: exclude;
             opacity: 0;
             transition: opacity 0.5s;
+            pointer-events: none;   /* ← this line fixes the unclickable links */
+
         }
         .glow-border:hover::after {
             opacity: 1;
@@ -344,7 +346,7 @@
                     <div class="absolute inset-1 rounded-full bg-gradient-to-br from-ai-cyan via-ai-purple to-ai-blue p-[3px]">
                         <div class="w-full h-full rounded-full bg-ai-dark flex items-center justify-center overflow-hidden">
                             <!-- REPLACE WITH YOUR DIRECT IMAGE URL (e.g., https://drive.google.com/uc?export=view&id=YOUR_FILE_ID) -->
-                            <img src="https://drive.usercontent.google.com/download?id=1iQK-pk5AxQXKrHN1nq4_rFeJnIOs6FpK&export=view?text=Lave+Kumar" alt="Lave Kumar" class="w-full h-full object-cover rounded-full" onerror="this.parentElement.innerHTML='<span class=\'text-3xl font-bold bg-gradient-to-r from-ai-cyan to-ai-purple bg-clip-text text-transparent\'>LK</span>'">
+                            <img src="https://drive.google.com/uc?export=view&id=1iQK-pk5AxQXKrHN1nq4_rFeJnIOs6FpK" alt="Lave Kumar" class="w-full h-full object-cover rounded-full" onerror="this.parentElement.innerHTML='<span class=\'text-3xl font-bold bg-gradient-to-r from-ai-cyan to-ai-purple bg-clip-text text-transparent\'>LK</span>'">
                         </div>
                     </div>
                 </div>
